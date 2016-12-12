@@ -30,13 +30,17 @@ public class MyService extends Service implements SensorEventListener {
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
     private DataBaseHandler db = new DataBaseHandler(this);
+    private int number=0;
+
 
 
 
     @Override
     public IBinder onBind(Intent intent) {
 
-        Log.d("service ","the service is active now");
+
+
+
         return null;
     }
 
@@ -52,14 +56,19 @@ public class MyService extends Service implements SensorEventListener {
         float delta = mAccelCurrent - mAccelLast;
         mAccel = mAccel * 0.9f + delta; // perform low-cut filter
 
-        if (mAccel >= 2) {
+        if (mAccel >= 20) {
             showNotification();
             Log.d("Insert","Inserting ....");
             db.addParams(new Params(x,y,z,actualTime));
             Log.d("Insert","Insert is finish .");
             Toast.makeText(this, "Device detected a shock !!", Toast.LENGTH_SHORT).show();
-            //SmsManager.getDefault().sendTextMessage("23481849",null,"your device detected a shock",null,null);
-            Log.d("Send"," the message was sent by success!!");
+
+
+
+
+
+            SmsManager.getDefault().sendTextMessage(""+number,null,"your device detected a shock",null,null);
+            Log.d("Send"," the message was sent by success to the number!! "+number);
         }
 
     }
@@ -72,6 +81,14 @@ public class MyService extends Service implements SensorEventListener {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
+        try {
+            String str = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+            number = Integer.parseInt(str);
+
+        }catch (Exception ex){
+            ex.printStackTrace();
+        }
+        Log.d("service ","the service is active now");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI, new Handler());

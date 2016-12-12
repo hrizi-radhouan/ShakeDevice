@@ -9,6 +9,7 @@ import android.view.View;
 public class MainActivity extends AppCompatActivity {
     Intent intent ;
     private static int numberPhone=0;
+    public static String EXTRA_MESSAGE="tn.enis.com.shakedevice.EXTRA_MESSAGE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void startService(View view){
         intent = new Intent(this, MyService.class);
+        intent.putExtra(EXTRA_MESSAGE,""+numberPhone);
         //Start Service
         startService(intent);
     }
