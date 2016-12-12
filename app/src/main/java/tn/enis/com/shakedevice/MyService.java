@@ -32,6 +32,8 @@ public class MyService extends Service implements SensorEventListener {
 
     @Override
     public IBinder onBind(Intent intent) {
+
+        Log.d("service ","the service is active now");
         return null;
     }
 
@@ -59,11 +61,11 @@ public class MyService extends Service implements SensorEventListener {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mAccelerometer = mSensorManager
-                .getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        mSensorManager.registerListener(this, mAccelerometer,
-                SensorManager.SENSOR_DELAY_UI, new Handler());
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, mAccelerometer, SensorManager.SENSOR_DELAY_UI, new Handler());
+
         return START_STICKY;
     }
 

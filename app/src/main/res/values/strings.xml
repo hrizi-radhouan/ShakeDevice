@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ShakeDevice</string>
+    <string name="name_btn_start">start</string>
+    <string name="name_btn_stop">stop</string>
+    <string name="name_btn_edit">Edit Phone number</string>
+    <string name="name_editTxt_numPhone">Phone number which is receive the sms</string>
+    <string name="name_register_btn">register</string>
 </resources>
