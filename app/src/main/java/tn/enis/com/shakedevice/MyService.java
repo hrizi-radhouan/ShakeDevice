@@ -13,7 +13,9 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.telephony.SmsManager;
 import android.util.Log;
+import android.widget.Toast;
 
 
 /**
@@ -27,6 +29,7 @@ public class MyService extends Service implements SensorEventListener {
     private float mAccel; // acceleration apart from gravity
     private float mAccelCurrent; // current acceleration including gravity
     private float mAccelLast; // last acceleration including gravity
+    private DataBaseHandler db = new DataBaseHandler(this);
 
 
 
@@ -43,6 +46,7 @@ public class MyService extends Service implements SensorEventListener {
         float x = event.values[0];
         float y = event.values[1];
         float z = event.values[2];
+        long actualTime = event.timestamp;
         mAccelLast = mAccelCurrent;
         mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
         float delta = mAccelCurrent - mAccelLast;
@@ -50,6 +54,12 @@ public class MyService extends Service implements SensorEventListener {
 
         if (mAccel >= 2) {
             showNotification();
+            Log.d("Insert","Inserting ....");
+            db.addParams(new Params(x,y,z,actualTime));
+            Log.d("Insert","Insert is finish .");
+            Toast.makeText(this, "Device detected a shock !!", Toast.LENGTH_SHORT).show();
+            //SmsManager.getDefault().sendTextMessage("23481849",null,"your device detected a shock",null,null);
+            Log.d("Send"," the message was sent by success!!");
         }
 
     }
